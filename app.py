@@ -718,8 +718,18 @@ def render_live_panel(
     with st.container(border=True):
         st.subheader("Current watchlist status")
         if all_frame.empty:
-            st.caption("Status counts will appear when the engine publishes snapshots.")
+            st.caption(
+                "No ticker snapshots are available yet. The engine will publish "
+                "status counts after it loads usable historical bars."
+            )
         else:
+            if engine_state == "market_closed":
+                st.caption(
+                    "The market is closed. Counts use each ticker's latest "
+                    "available historical bar and may be delayed."
+                )
+            else:
+                st.caption("Counts use the most recently published ticker snapshots.")
             state_counts = (
                 all_frame["display_state"]
                 .value_counts()
