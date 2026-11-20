@@ -413,6 +413,7 @@ class LiveScreenerEngine:
                 monitor.last_signal_time = persisted_snapshot.get("last_signal_time")
             if not hourly.empty:
                 monitor.latest_price = float(hourly["Close"].iloc[-1])
+                monitor.quote_time = pd.Timestamp(hourly.index[-1]).to_pydatetime()
             monitor.last_bar_time = max(
                 pd.Timestamp(hourly.index[-1]) if not hourly.empty else current_hour,
                 current_hour - pd.Timedelta(hours=1),
@@ -428,6 +429,7 @@ class LiveScreenerEngine:
                     monitor.closed_weekly["week_ending"].iloc[-1]
                 )
             self.monitors[ticker] = monitor
+            self.store.upsert_snapshot(self._dashboard_snapshot(monitor, now))
             print(
                 f"[ENGINE] Initialized {ticker} with {len(hourly)} hourly bars; "
                 f"confirmed zone: {'yes' if monitor.zone else 'no'}."
