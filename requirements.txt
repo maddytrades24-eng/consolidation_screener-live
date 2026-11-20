@@ -1,0 +1,9 @@
+databento>=0.60
+numpy>=1.26
+openpyxl>=3.1
+pandas>=2.2
+portalocker>=2.8
+python-dotenv>=1.0
+streamlit>=1.57
+tqdm>=4.66
+yfinance>=0.2.54
